@@ -1,17 +1,29 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, StatusBar } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import Weather from './Weather';
 
 
 export default class App extends Component {
    state = {
-     isLoaded: true
+     isLoaded: false
    };
+   componentDidMount(){
+     navigator.geolocation.getCurrentPosition(position => {
+      this.setState({
+         isLoaded: true
+      });
+     },
+     error => {
+       console.log(error);
+     }
+     );
+   }
  render(){
    const {isLoaded} = this.state;
   return ( 
      <View style={styles.container}>
+       <StatusBar hidden={true}/>
        {isLoaded ? <Weather /> : (
          <View style={styles.loading}>
          <Text style={styles.loadingText}>Gettind the fucking weather</Text>
@@ -35,6 +47,6 @@ export default class App extends Component {
     },
     loadingText: {
       fontSize:38,
-      marginBottom:100
+      marginBottom:24
     }
   });
