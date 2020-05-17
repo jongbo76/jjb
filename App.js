@@ -3,30 +3,40 @@ import { StyleSheet, Text, View, StatusBar } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import Weather from './Weather';
 
+const API_KEY = "d02e8f4fc6455508704b5418fe654604";
 
 export default class App extends Component {
    state = {
-     isLoaded: false
+     isLoaded: false,
+     error: null
    };
    componentDidMount(){
      navigator.geolocation.getCurrentPosition(position => {
-      this.setState({
-         isLoaded: true
-      });
-     },
+      this._getWeather(position.coords.latitude, position.coords.longitude)
+           },
      error => {
-       console.log(error);
+       this.setState({
+       error: error
+      });
      }
      );
    }
+   _getWeather=(lat, long) => {
+     fetch(`http://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${long}&APPID=${API_KEY}`)
+     .then(response => response.json())
+     .then(json => {
+       console.log(json)
+     })
+   }
  render(){
-   const {isLoaded} = this.state;
+   const {isLoaded, error} = this.state;
   return ( 
      <View style={styles.container}>
        <StatusBar hidden={true}/>
        {isLoaded ? <Weather /> : (
          <View style={styles.loading}>
          <Text style={styles.loadingText}>Gettind the fucking weather</Text>
+         {error ? <Text style={styles.errorText}>{error}</Text> : null }
          </View>
        )}
      </View>
@@ -38,6 +48,11 @@ export default class App extends Component {
     container: {
       flex: 1,
       backgroundColor:"#fff"
+    },
+    errorText :{
+      color:"red",
+      backgroundColor:"transparent",
+      marginBottom:40
     },
     loading: {
       flex:1,
