@@ -39,19 +39,19 @@ Clouds:{
   colors: ["#89F7FE", "#66A6FF"],
   title: "Drizzle",
   subtitle: "Is like rain, but gay",
-  icon: "ios-rainy-outline"
+  icon: "weather-hail"
  },
  Haze:{
   colors: ["#89F7FE", "#66A6FF"],
   title: "Haze",
   subtitle: "Don't know what this is",
-  icon: "ios-wheather-hail"
+  icon: "weather-hail"
  },
  Mist:{
   colors: ["#D7D2CC", "#304352"],
-  title: "Haze",
+  title: "Mist!",
   subtitle: "It's like you have no glasses on.",
-  icon: "ios-weather-fog"
+  icon: "weather-fog"
  }
 };
 function Weather({weatherName, temp}){
