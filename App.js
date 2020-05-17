@@ -8,11 +8,13 @@ const API_KEY = "d02e8f4fc6455508704b5418fe654604";
 export default class App extends Component {
    state = {
      isLoaded: false,
-     error: null
+     error: null,
+     temperature: null,
+     name: null
    };
    componentDidMount(){
      navigator.geolocation.getCurrentPosition(position => {
-      this._getWeather(position.coords.latitude, position.coords.longitude)
+      this._getWeather(position.coords.latitude, position.coords.longitude);
            },
      error => {
        this.setState({
@@ -25,15 +27,20 @@ export default class App extends Component {
      fetch(`http://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${long}&APPID=${API_KEY}`)
      .then(response => response.json())
      .then(json => {
-       console.log(json)
-     })
-   }
+       console.log(json);
+       this.setState({
+         temperature: json.main.temp,
+         name: json.weather[0].main,
+         isLoaded:true
+       });
+     });
+   };
  render(){
-   const {isLoaded, error} = this.state;
+   const { isLoaded, error, temperature, name } = this.state;
   return ( 
      <View style={styles.container}>
        <StatusBar hidden={true}/>
-       {isLoaded ? <Weather /> : (
+       {isLoaded ? <Weather weatherName={name} temp={Math.floor(temperature - 273.15)} /> : (
          <View style={styles.loading}>
          <Text style={styles.loadingText}>Gettind the fucking weather</Text>
          {error ? <Text style={styles.errorText}>{error}</Text> : null }
@@ -41,10 +48,9 @@ export default class App extends Component {
        )}
      </View>
      );
-   }
   }
- 
-  const styles=StyleSheet.create({
+}
+  const styles = StyleSheet.create({
     container: {
       flex: 1,
       backgroundColor:"#fff"
