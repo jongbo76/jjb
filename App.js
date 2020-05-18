@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View, StatusBar } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
 import Weather from './Weather';
 
 const API_KEY = "d02e8f4fc6455508704b5418fe654604";
@@ -40,7 +39,7 @@ export default class App extends Component {
   return ( 
      <View style={styles.container}>
        <StatusBar hidden={true}/>
-       {isLoaded ? <Weather weatherName={"Mist"} temp={Math.ceil(temperature - 273.15)} /> : (
+       {isLoaded ? <Weather weatherName={name} temp={Math.ceil(temperature - 273.15)} /> : (
          <View style={styles.loading}>
          <Text style={styles.loadingText}>Gettind the fucking weather</Text>
          {error ? <Text style={styles.errorText}>{error}</Text> : null }
